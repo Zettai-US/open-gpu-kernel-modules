@@ -2466,8 +2466,10 @@ static int hmm_make_device_exclusive_range(struct mm_struct *mm,
     }
 
     return npages;
-#else
+#elif defined(NV_MAKE_DEVICE_EXCLUSIVE_RANGE_PRESENT)
     return make_device_exclusive_range(mm, start, end, pages, &g_uvm_global);
+#else
+    return -EOPNOTSUPP;
 #endif
 }
 

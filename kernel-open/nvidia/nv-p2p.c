@@ -1445,7 +1445,7 @@ NV_STATUS NV_API_CALL nv_pin_cxl_buffer_hugepages(
 
     // Pin pages using pin_user_pages
     ret = NV_PIN_USER_PAGES(startAddr, pageCount, FOLL_LONGTERM | FOLL_WRITE,
-                           pBuffer->pages, NULL);
+                           pBuffer->pages);
     if (ret != pageCount)
     {
         nv_printf(NV_DBG_ERRORS, "NVRM: CXL hugepage pin: failed - got %d, expected %u\n",

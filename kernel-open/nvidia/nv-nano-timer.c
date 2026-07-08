@@ -150,13 +150,13 @@ void NV_API_CALL nv_create_nano_timer(
     nv_nstimer->nv_nano_timer_callback = nvidia_nano_timer_callback;
 
 #if NV_NANO_TIMER_USE_HRTIMER
-#if NV_IS_EXPORT_SYMBOL_PRESENT_hrtimer_setup
+#if defined(NV_HRTIMER_SETUP_PRESENT)
     hrtimer_setup(&nv_nstimer->hr_timer, &nv_nano_timer_callback_typed_data,
                   CLOCK_MONOTONIC, HRTIMER_MODE_REL);
 #else
     hrtimer_init(&nv_nstimer->hr_timer, CLOCK_MONOTONIC, HRTIMER_MODE_REL);
     nv_nstimer->hr_timer.function = nv_nano_timer_callback_typed_data;
-#endif // NV_IS_EXPORT_SYMBOL_PRESENT_hrtimer_setup
+#endif // NV_HRTIMER_SETUP_PRESENT
 #else
 #if defined(NV_TIMER_SETUP_PRESENT)
     timer_setup(&nv_nstimer->jiffy_timer, nv_jiffy_timer_callback_typed_data, 0);

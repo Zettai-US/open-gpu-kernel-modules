@@ -610,7 +610,7 @@ void NV_API_CALL nv_cap_close_fd(int fd)
  * 2020-12-20 8760c909f54a ("file: Rename __close_fd to close_fd and remove
  * the files parameter")
  */
-#if NV_IS_EXPORT_SYMBOL_PRESENT_close_fd
+#if defined(NV_CLOSE_FD_PRESENT) || NV_IS_EXPORT_SYMBOL_PRESENT_close_fd
     close_fd(fd);
 #elif NV_IS_EXPORT_SYMBOL_PRESENT___close_fd
     __close_fd(current->files, fd);

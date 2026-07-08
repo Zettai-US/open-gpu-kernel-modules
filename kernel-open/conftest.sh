@@ -3731,6 +3731,55 @@ compile_test() {
             compile_check_conftest "$CODE" "NV_TIMER_SETUP_PRESENT" "" "functions"
         ;;
 
+        timer_delete_sync)
+            #
+            # Determine if the function timer_delete_sync() is present.
+            #
+            # Added as the replacement for del_timer_sync(). Newer kernels may
+            # provide timer_delete_sync() without exporting it as a module
+            # symbol, so callers in inline headers need an API-presence test
+            # instead of an export-symbol test.
+            #
+            CODE="
+            #include <linux/timer.h>
+            int conftest_timer_delete_sync(void) {
+                return timer_delete_sync();
+            }"
+            compile_check_conftest "$CODE" "NV_TIMER_DELETE_SYNC_PRESENT" "" "functions"
+        ;;
+
+        hrtimer_setup)
+            #
+            # Determine if the function hrtimer_setup() is present.
+            #
+            # Newer kernels replaced open-coded hrtimer_init() plus function
+            # assignment with hrtimer_setup(). This is an API-presence test;
+            # export-symbol tests are too strict for GPL-only exports.
+            #
+            CODE="
+            #include <linux/hrtimer.h>
+            int conftest_hrtimer_setup(void) {
+                return hrtimer_setup();
+            }"
+            compile_check_conftest "$CODE" "NV_HRTIMER_SETUP_PRESENT" "" "functions"
+        ;;
+
+        close_fd)
+            #
+            # Determine if the function close_fd() is present.
+            #
+            # Symbol-export tests are not reliable when building against a
+            # prepared source tree without Module.symvers, so use a header/API
+            # presence test for code paths that only need to compile.
+            #
+            CODE="
+            #include <linux/fdtable.h>
+            int conftest_close_fd(void) {
+                return close_fd();
+            }"
+            compile_check_conftest "$CODE" "NV_CLOSE_FD_PRESENT" "" "functions"
+        ;;
+
         radix_tree_replace_slot)
             #
             # Determine if the radix_tree_replace_slot() function is

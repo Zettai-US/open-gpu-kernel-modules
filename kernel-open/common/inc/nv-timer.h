@@ -65,7 +65,7 @@ static inline void nv_timer_setup(struct nv_timer *nv_timer,
 
 static inline void nv_timer_delete_sync(struct timer_list *timer)
 {
-#if !defined(NV_BSD) && NV_IS_EXPORT_SYMBOL_PRESENT_timer_delete_sync
+#if !defined(NV_BSD) && defined(NV_TIMER_DELETE_SYNC_PRESENT)
     timer_delete_sync(timer);
 #else
     del_timer_sync(timer);
