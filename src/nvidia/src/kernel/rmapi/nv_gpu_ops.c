@@ -5621,6 +5621,11 @@ static NV_STATUS channelAllocate(const gpuTsgHandle tsg,
         goto cleanup_free_virtual;
     }
 
+    // UVM treats a zero notifier as the no-error state.  System-memory
+    // allocations are not guaranteed to be zeroed, so initialize the full
+    // notifier surface before the channel can report an asynchronous error.
+    portMemSet((void *)channel->errorNotifier, 0, errorNotifierSize);
+
     // Let's allocate the channel
     pAllocInfo->gpFifoAllocParams.hObjectError  = hErrorNotifier;
     status = getHandleForVirtualAddr(vaSpace,
